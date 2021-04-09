@@ -23,8 +23,18 @@ async function getContactById(contactId) {
   }
 }
 
-function removeContact(contactId) {
+async function removeContact(contactId) {
   try {
+    const data = await fs.readFile(contactsPath);
+    const dataArr = JSON.parse(data);
+
+    dataArr.map((el) => {
+      if (el.id === contactId) {
+        const index = dataArr.indexOf(el);
+        dataArr.splice(index, 1);
+        fs.writeFile(contactsPath, JSON.stringify(dataArr));
+      }
+    });
   } catch (error) {
     console.log(error);
   }

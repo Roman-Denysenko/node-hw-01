@@ -32,7 +32,12 @@ async function removeContact(contactId) {
       if (el.id === contactId) {
         const index = dataArr.indexOf(el);
         dataArr.splice(index, 1);
-        fs.writeFile(contactsPath, JSON.stringify(dataArr));
+        for (let i = 0; i < dataArr.length; i += 1) {
+          dataArr[i].id = 1 + i;
+        }
+        fs.writeFile(contactsPath, JSON.stringify(dataArr), (error) => {
+          if (error) throw error;
+        });
       }
     });
   } catch (error) {
@@ -40,8 +45,22 @@ async function removeContact(contactId) {
   }
 }
 
-function addContact(name, email, phone) {
+async function addContact(name, email, phone) {
   try {
+    const data = await fs.readFile(contactsPath);
+    const dataArr = JSON.parse(data);
+    const id = dataArr.length + 1;
+    const item = {
+      id: id,
+      name: `${name}`,
+      email: `${email}`,
+      phone: `${phone}`,
+    };
+
+    dataArr.push(item);
+    fs.writeFile(contactsPath, JSON.stringify(dataArr), (error) => {
+      if (error) throw error;
+    });
   } catch (error) {
     console.log(error);
   }

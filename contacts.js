@@ -40,6 +40,7 @@ async function removeContact(contactId) {
         });
       }
     });
+    console.log("Contact remove success");
   } catch (error) {
     console.log(error);
   }
@@ -61,6 +62,7 @@ async function addContact(name, email, phone) {
     fs.writeFile(contactsPath, JSON.stringify(dataArr), (error) => {
       if (error) throw error;
     });
+    console.log("Contact add success");
   } catch (error) {
     console.log(error);
   }
